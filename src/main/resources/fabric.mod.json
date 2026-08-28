@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "reload-everything",
+  "version": "${version}",
+  "name": "Reload Everything",
+  "description": "一键重启游戏",
+  "authors": ["Me!"],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "CC0-1.0",
+  "icon": "assets/reload-everything/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "reload.everything.ReloadEverythingMod"
+    ],
+    "client": [
+      "reload.everything.client.ReloadEverythingClient"
+    ],
+    "preLaunch": [
+      "reload.everything.ReloadEverythingPreLaunch"
+    ]
+  },
+  "mixins": [
+    "reload-everything.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.19.3",
+    "minecraft": "~26.2",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
