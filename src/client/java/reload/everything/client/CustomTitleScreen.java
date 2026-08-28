@@ -5,6 +5,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
 import reload.everything.core.RestartManager;
+import net.minecraft.client.gui.components.Tooltip;
 
 public class CustomTitleScreen extends TitleScreen {
 
@@ -16,26 +17,23 @@ public class CustomTitleScreen extends TitleScreen {
     protected void init() {
         super.init();
 
-        // 三个小图标（friends、language、accessibility）的 y 坐标
-        // 在原版 TitleScreen.init() 中，它们位于最后一组按钮的 y 位置
-        // 具体值：this.height / 4 + 48 + 72 = this.height / 4 + 120
-        int iconY = this.height / 4 + 120;
-
+        // ==================== 主菜单重启按钮 ====================
         int buttonSize = 20;
-        int gap = 4;
-        int numberOfOriginalIcons = 3;
-        int totalWidth = numberOfOriginalIcons * buttonSize + (numberOfOriginalIcons - 1) * gap;
-        int startX = this.width / 2 - totalWidth / 2;
-        // 重启按钮是第四个
-        int restartX = startX + numberOfOriginalIcons * (buttonSize + gap);
+        int y = this.height / 4 + 144;
+        int exitX = this.width / 2 + 2;
+        int exitWidth = 98;
+        int restartX = exitX + exitWidth + 4;
 
         Button restartButton = Button.builder(
                 Component.literal("⟳"),
                 button -> {
-                    Minecraft.getInstance().gui.setScreen(new RestartConfirmScreen(this));
+                    Minecraft.getInstance().gui.setScreen(new RestartConfirmScreen(this, RestartManager::restartGame));
                 })
-                .bounds(restartX, iconY, buttonSize, buttonSize)
+                .bounds(restartX, y, buttonSize, buttonSize)
                 .build();
+
+        restartButton.setTooltip(Tooltip.create(Component.literal("重启游戏")));
+
         this.addRenderableWidget(restartButton);
     }
 }
