@@ -4,15 +4,18 @@ import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.ARGB;
 
 public class RestartConfirmScreen extends Screen {
     private final Screen parent;
     private final Runnable onConfirm;
+    private final String messageKey;
 
-    public RestartConfirmScreen(Screen parent, Runnable onConfirm) {
-        super(Component.translatable("screen.reload-everything.confirm"));
+    public RestartConfirmScreen(Screen parent, Runnable onConfirm, String messageKey) {
+        super(Component.translatable("screen.reload-everything.confirm.title"));
         this.parent = parent;
         this.onConfirm = onConfirm;
+        this.messageKey = messageKey;
     }
 
     @Override
@@ -20,7 +23,7 @@ public class RestartConfirmScreen extends Screen {
         super.init();
 
         Button confirmButton = Button.builder(
-                Component.literal("确认"),
+                Component.translatable("screen.reload-everything.confirm.button.confirm"),
                 button -> {
                     if (this.minecraft != null) {
                         this.minecraft.gui.setScreen(null);
@@ -34,7 +37,7 @@ public class RestartConfirmScreen extends Screen {
         this.addRenderableWidget(confirmButton);
 
         Button cancelButton = Button.builder(
-                Component.literal("取消"),
+                Component.translatable("screen.reload-everything.confirm.button.cancel"),
                 button -> this.onClose())
                 .bounds(this.width / 2 + 5, this.height / 2 + 30, 100, 20)
                 .build();
@@ -55,11 +58,18 @@ public class RestartConfirmScreen extends Screen {
 
     @Override
     public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        // 先调用 super 渲染背景和按钮
         super.extractRenderState(graphics, mouseX, mouseY, delta);
 
-        Component title = Component.literal("确定要执行此操作吗？");
-        int titleWidth = this.font.width(title);
-        graphics.text(this.font, title, this.width / 2 - titleWidth / 2, this.height / 2 - 50, 0xFFFFFF, true);
+        // 获取确认消息的文本
+        Component message = Component.translatable(this.messageKey);
+        String text = message.getString();
+        int textWidth = this.font.width(text);
+        int x = this.width / 2 - textWidth / 2;
+        int y = this.height / 2 - 50;
+
+        // 绘制文字（直接使用 String）
+        graphics.text(this.font, text, x, y, 0xFFFFFFFF, true);
     }
 
     @Override

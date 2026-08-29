@@ -1,0 +1,17 @@
+{
+  "modmenu.nameTranslation.reload-everything": "Reload Everything",
+  "modmenu.descriptionTranslation.reload-everything": "Reload the game with one click",
+
+  "screen.reload-everything.confirm.title": "Confirm Action",
+  "screen.reload-everything.confirm.restart": "Restart the game?",
+  "screen.reload-everything.confirm.reload_world": "Reload the current world?",
+  "screen.reload-everything.confirm.reconnect": "Reconnect to the server?",
+  "screen.reload-everything.confirm.reload_resource_packs": "Reload resource packs?",
+  "screen.reload-everything.confirm.button.confirm": "Confirm",
+  "screen.reload-everything.confirm.button.cancel": "Cancel",
+
+  "tooltip.reload-everything.restart_game": "Restart the game",
+  "tooltip.reload-everything.reload_world": "Reload the current world",
+  "tooltip.reload-everything.reconnect_server": "Reconnect to the server",
+  "tooltip.reload-everything.reload_resource_packs": "Reload resource packs"
+}

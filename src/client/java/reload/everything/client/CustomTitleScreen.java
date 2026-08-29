@@ -27,12 +27,12 @@ public class CustomTitleScreen extends TitleScreen {
         Button restartButton = Button.builder(
                 Component.literal("⟳"),
                 button -> {
-                    Minecraft.getInstance().gui.setScreen(new RestartConfirmScreen(this, RestartManager::restartGame));
+                    Minecraft.getInstance().gui.setScreen(new RestartConfirmScreen(this, RestartManager::restartGame, "screen.reload-everything.confirm.restart"));
                 })
                 .bounds(restartX, y, buttonSize, buttonSize)
                 .build();
 
-        restartButton.setTooltip(Tooltip.create(Component.literal("重启游戏")));
+        restartButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.restart_game")));
 
         this.addRenderableWidget(restartButton);
     }

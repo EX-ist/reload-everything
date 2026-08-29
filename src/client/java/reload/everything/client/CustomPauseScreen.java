@@ -7,6 +7,7 @@ import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.Component;
 import reload.everything.core.RestartManager;
 
+
 public class CustomPauseScreen extends PauseScreen {
 
     public CustomPauseScreen(boolean showPauseMenu) {
@@ -34,11 +35,11 @@ protected void init() {
         Button reloadWorldButton = Button.builder(
                 Component.literal("⟳"),
                 button -> {
-                    client.gui.setScreen(new RestartConfirmScreen(this, RestartManager::reloadWorld));
+                    client.gui.setScreen(new RestartConfirmScreen(this, RestartManager::reloadWorld,"screen.reload-everything.confirm.reload_world"));
                 })
                 .bounds(currentX - buttonSize, optionsY, buttonSize, buttonSize)
                 .build();
-        reloadWorldButton.setTooltip(Tooltip.create(Component.literal("重载当前存档")));
+        reloadWorldButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reload_world")));
         this.addRenderableWidget(reloadWorldButton);
         currentX = currentX - buttonSize - gap;
     }
@@ -48,11 +49,11 @@ protected void init() {
         Button reconnectButton = Button.builder(
                 Component.literal("↻"),
                 button -> {
-                    client.gui.setScreen(new RestartConfirmScreen(this, RestartManager::reconnectServer));
+                    client.gui.setScreen(new RestartConfirmScreen(this, RestartManager::reconnectServer, "screen.reload-everything.confirm.reconnect"));
                 })
                 .bounds(currentX - buttonSize, optionsY, buttonSize, buttonSize)
                 .build();
-        reconnectButton.setTooltip(Tooltip.create(Component.literal("重新连接服务器")));
+        reconnectButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reconnect_server")));
         this.addRenderableWidget(reconnectButton);
     }
 }

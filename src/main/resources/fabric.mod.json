@@ -4,14 +4,14 @@
   "version": "${version}",
   "name": "Reload Everything",
   "description": "一键重启游戏",
-  "authors": ["Me!"],
+  "authors": ["Miro"],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/reload-everything/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "main": [
       "reload.everything.ReloadEverythingMod"
