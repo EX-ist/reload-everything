@@ -7,7 +7,6 @@ import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.Component;
 import reload.everything.core.RestartManager;
 
-
 public class CustomPauseScreen extends PauseScreen {
 
     public CustomPauseScreen(boolean showPauseMenu) {
@@ -15,46 +14,36 @@ public class CustomPauseScreen extends PauseScreen {
     }
 
     @Override
-protected void init() {
-    super.init();
+    protected void init() {
+        super.init();
 
-    Minecraft client = Minecraft.getInstance();
-    boolean isSingleplayer = client.isLocalServer();
-    boolean isMultiplayer = client.getCurrentServer() != null;
+        Minecraft client = Minecraft.getInstance();
+        boolean isSingleplayer = client.isLocalServer();
 
-    // 原版“选项”按钮的位置：(width/2 - 100, height/4 - 16 + 96)
-    int optionsX = this.width / 2 - 100;
-    int optionsY = this.height / 4 - 16 + 96;
+        int optionsX = this.width / 2 - 100;
+        int optionsY = this.height / 4 - 16 + 96;
 
-    int buttonSize = 20;
-    int gap = 4;
-    int currentX = optionsX - gap;
+        int buttonSize = 20;
+        int gap = 4;
+        int currentX = optionsX - gap;
 
-    // ==================== 重载存档按钮（单机模式下显示） ====================
-    if (isSingleplayer) {
-        Button reloadWorldButton = Button.builder(
-                Component.literal("⟳"),
-                button -> {
-                    client.gui.setScreen(new RestartConfirmScreen(this, RestartManager::reloadWorld,"screen.reload-everything.confirm.reload_world"));
-                })
-                .bounds(currentX - buttonSize, optionsY, buttonSize, buttonSize)
-                .build();
-        reloadWorldButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reload_world")));
-        this.addRenderableWidget(reloadWorldButton);
-        currentX = currentX - buttonSize - gap;
+        // 只在单机模式下显示重载按钮
+        if (isSingleplayer) {
+            Button reloadWorldButton = Button.builder(
+                    Component.literal("⟳"),
+                    button -> {
+                        client.gui.setScreen(new RestartConfirmScreen(
+                                this,
+                                RestartManager::reloadWorld,
+                                "screen.reload-everything.confirm.reload_world"
+                        ));
+                    })
+                    .bounds(currentX - buttonSize, optionsY, buttonSize, buttonSize)
+                    .build();
+            reloadWorldButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reload_world")));
+            this.addRenderableWidget(reloadWorldButton);
+        }
+
+        // 多人重连按钮已移除
     }
-
-    // ==================== 重连服务器按钮（多人模式下显示） ====================
-    if (isMultiplayer) {
-        Button reconnectButton = Button.builder(
-                Component.literal("↻"),
-                button -> {
-                    client.gui.setScreen(new RestartConfirmScreen(this, RestartManager::reconnectServer, "screen.reload-everything.confirm.reconnect"));
-                })
-                .bounds(currentX - buttonSize, optionsY, buttonSize, buttonSize)
-                .build();
-        reconnectButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reconnect_server")));
-        this.addRenderableWidget(reconnectButton);
-    }
-}
 }
