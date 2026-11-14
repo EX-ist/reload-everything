@@ -39,6 +39,3 @@ replay_*.log
 *.hprof
 *.jfr
 
-# github
-.github/workflows/
-
