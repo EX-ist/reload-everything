@@ -8,7 +8,7 @@ A client-side Fabric mod that adds a ⟳ button to three screens, so you can rel
 | Pause menu (singleplayer only) | Saves the current world and loads it again, waiting for the save to finish before reloading |
 | Resource pack screen | Reloads resource packs and returns you to the screen you came from |
 
-A ⚙ button on the title screen and in the pause menu opens the settings screen, where every button can be toggled, the confirmation prompt can be turned off, and restart mode can be switched between process restart and soft reload.
+The settings screen is opened from [Mod Menu](https://modrinth.com/mod/modmenu): every button can be toggled, the confirmation prompt can be turned off, and restart mode can be switched between process restart and soft reload.
 
 ## Requirements
 
@@ -16,6 +16,7 @@ A ⚙ button on the title screen and in the pause menu opens the settings screen
 - Fabric Loader 0.19.3
 - Fabric API 0.158.0+26.2
 - Cloth Config API 26.2.155
+- Mod Menu 20.0.3 (optional, needed to open the settings screen)
 - Java 25
 
 ## Building

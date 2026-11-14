@@ -5,7 +5,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.network.chat.Component;
-import reload.everything.config.ConfigButton;
 import reload.everything.config.ReloadEverythingConfig;
 import reload.everything.core.RestartManager;
 
@@ -43,10 +42,7 @@ public class CustomPauseScreen extends PauseScreen {
                     .build();
             reloadWorldButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reload_world")));
             this.addRenderableWidget(reloadWorldButton);
-            x -= buttonSize + gap;
         }
-
-        this.addRenderableWidget(ConfigButton.create(this, x, optionsY, buttonSize));
 
         // 多人重连按钮已移除
     }

@@ -20,6 +20,9 @@
     "client": [
       "reload.everything.client.ReloadEverythingClient"
     ],
+    "modmenu": [
+      "reload.everything.config.ModMenuIntegration"
+    ],
     "preLaunch": [
       "reload.everything.ReloadEverythingPreLaunch"
     ]
@@ -39,6 +42,7 @@
     "cloth-config": ">=26.2.155"
   },
   "suggests": {
-    "fastquit": "*"
+    "fastquit": "*",
+    "modmenu": ">=20.0.3"
   }
 }

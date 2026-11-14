@@ -8,7 +8,6 @@ import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.PackRepository;
 import reload.everything.ReloadEverything;
-import reload.everything.config.ConfigButton;
 import reload.everything.config.ReloadEverythingConfig;
 
 import java.nio.file.Path;
@@ -75,9 +74,6 @@ public class CustomResourcePackScreen extends PackSelectionScreen {
                     .build();
             reloadButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reload_resource_packs")));
             this.addRenderableWidget(reloadButton);
-            x -= buttonSize + gap;
         }
-
-        this.addRenderableWidget(ConfigButton.create(this, Math.max(4, x), y, buttonSize));
     }
 }

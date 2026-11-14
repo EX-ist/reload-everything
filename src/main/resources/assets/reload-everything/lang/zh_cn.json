@@ -12,7 +12,6 @@
   "tooltip.reload-everything.soft_reload": "软重载游戏",
   "tooltip.reload-everything.reload_world": "重新加载当前存档",
   "tooltip.reload-everything.reload_resource_packs": "重新加载资源包",
-  "tooltip.reload-everything.config": "重启一切 设置",
   "reload-everything.config.title": "重启一切",
   "reload-everything.config.category.behavior": "行为",
   "reload-everything.config.category.buttons": "按钮",
