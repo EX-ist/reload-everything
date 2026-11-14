@@ -10,21 +10,30 @@ import org.slf4j.LoggerFactory;
 public class ReloadEverything implements ModInitializer {
 	public static final String MOD_ID = "reload-everything";
 
-	// This logger is used to write text to the console and the log file.
-	// It is considered best practice to use your mod id as the logger's name.
-	// That way, it's clear which mod wrote info, warnings, and errors.
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
-		LOGGER.info("Hello Fabric world!");
+		LOGGER.info("Reload Everything 已初始化");
 	}
 
 	public static Identifier id(String path) {
 		return Identifier.fromNamespaceAndPath(MOD_ID, path);
+	}
+
+	public static void info(String message, Object... args) {
+		LOGGER.info(message, args);
+	}
+
+	public static void warn(String message, Object... args) {
+		LOGGER.warn(message, args);
+	}
+
+	public static void error(String message) {
+		LOGGER.error(message);
+	}
+
+	public static void error(String message, Throwable throwable) {
+		LOGGER.error(message, throwable);
 	}
 }

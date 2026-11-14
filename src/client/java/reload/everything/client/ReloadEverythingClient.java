@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.gui.screens.packs.PackSelectionScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.packs.repository.PackRepository;
+import reload.everything.ReloadEverything;
 import reload.everything.core.RestartManager;
 
 import java.lang.reflect.Field;
@@ -17,60 +18,63 @@ import java.util.function.Consumer;
 
 public class ReloadEverythingClient implements ClientModInitializer {
 
+    /** 最近一个不是资源包界面的屏幕，作为资源包界面的返回目标。 */
+    private static Screen lastNonPackScreen;
+
     @Override
     public void onInitializeClient() {
-        System.out.println("[Reload Everything] 客户端已初始化");
-
         RestartManager.setClientReloadCallback(() -> {
             Minecraft.getInstance().reloadResourcePacks();
-            System.out.println("[Reload Everything] 资源已重新加载");
+            ReloadEverything.info("资源已重新加载");
         });
 
-        // 主菜单替换
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
+            if (!(screen instanceof PackSelectionScreen)) {
+                lastNonPackScreen = screen;
+            }
+
             if (screen instanceof TitleScreen && !(screen instanceof CustomTitleScreen)) {
                 client.gui.setScreen(new CustomTitleScreen(true));
+                return;
             }
-        });
-
-        // 暂停菜单替换
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
             if (screen instanceof PauseScreen && !(screen instanceof CustomPauseScreen)) {
                 client.gui.setScreen(new CustomPauseScreen(true));
+                return;
             }
-        });
-
-        // 资源包界面替换
-        ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
-            System.out.println("[Reload Everything] AFTER_INIT 触发，屏幕类: " + screen.getClass().getName());
             if (screen instanceof PackSelectionScreen && !(screen instanceof CustomResourcePackScreen)) {
-                PackSelectionScreen packScreen = (PackSelectionScreen) screen;
-                try {
-                    Field modelField = PackSelectionScreen.class.getDeclaredField("model");
-                    modelField.setAccessible(true);
-                    Object model = modelField.get(packScreen);
-
-                    Field repositoryField = model.getClass().getDeclaredField("repository");
-                    repositoryField.setAccessible(true);
-                    PackRepository repository = (PackRepository) repositoryField.get(model);
-
-                    Field packDirField = PackSelectionScreen.class.getDeclaredField("packDir");
-                    packDirField.setAccessible(true);
-                    Path packDir = (Path) packDirField.get(packScreen);
-
-                    Field titleField = Screen.class.getDeclaredField("title");
-                    titleField.setAccessible(true);
-                    Component title = (Component) titleField.get(packScreen);
-
-                    Field outputField = model.getClass().getDeclaredField("output");
-                    outputField.setAccessible(true);
-                    Consumer<PackRepository> output = (Consumer<PackRepository>) outputField.get(model);
-                    Screen returnScreen = client.gui.screen();
-                    client.gui.setScreen(new CustomResourcePackScreen(repository, output, packDir, title, returnScreen));
-                } catch (Exception e) {
-                    System.err.println("[Reload Everything] 无法替换资源包界面: " + e.getMessage());
-                }
+                replacePackSelectionScreen(client, (PackSelectionScreen) screen);
             }
         });
+    }
+
+    public static Screen getLastNonPackScreen() {
+        return lastNonPackScreen;
+    }
+
+    /**
+     * 用带 ⟳ 按钮的子类替换原版资源包界面。
+     * 原版界面没有公开的构造入口参数，只能通过反射取出它已经持有的仓库/输出回调/目录/标题。
+     */
+    private static void replacePackSelectionScreen(Minecraft client, PackSelectionScreen screen) {
+        try {
+            Object model = readField(PackSelectionScreen.class, screen, "model");
+            if (model == null) {
+                throw new IllegalStateException("PackSelectionScreen.model 为 null");
+            }
+            PackRepository repository = (PackRepository) readField(model.getClass(), model, "repository");
+            Consumer<PackRepository> output = (Consumer<PackRepository>) readField(model.getClass(), model, "output");
+            Path packDir = (Path) readField(PackSelectionScreen.class, screen, "packDir");
+            Component title = (Component) readField(Screen.class, screen, "title");
+
+            client.gui.setScreen(new CustomResourcePackScreen(repository, output, packDir, title, lastNonPackScreen));
+        } catch (Exception e) {
+            ReloadEverything.error("无法替换资源包界面，保留原版界面", e);
+        }
+    }
+
+    private static Object readField(Class<?> owner, Object instance, String name) throws ReflectiveOperationException {
+        Field field = owner.getDeclaredField(name);
+        field.setAccessible(true);
+        return field.get(instance);
     }
 }

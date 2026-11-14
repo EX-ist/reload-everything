@@ -1,10 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "reload.everything.client",
+  "package": "reload.everything.client.mixin",
   "compatibilityLevel": "JAVA_25",
   "client": [
-    "ScreenAccessor"
+    "ExampleClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
