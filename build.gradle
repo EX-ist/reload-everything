@@ -5,6 +5,7 @@ plugins {
 
 repositories {
 	maven { url = "https://maven.shedaniel.me/" }
+	maven { url = "https://maven.terraformersmc.com/releases/" }
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -33,6 +34,9 @@ dependencies {
 
 	// Cloth Config API, used for the in-game settings screen.
 	implementation "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}"
+
+	// Mod Menu, used as the entry point for the settings screen.
+	implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {

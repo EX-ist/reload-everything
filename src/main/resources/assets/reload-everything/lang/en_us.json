@@ -12,7 +12,6 @@
   "tooltip.reload-everything.soft_reload": "Soft-reload the game",
   "tooltip.reload-everything.reload_world": "Reload the current world",
   "tooltip.reload-everything.reload_resource_packs": "Reload resource packs",
-  "tooltip.reload-everything.config": "Reload Everything settings",
   "reload-everything.config.title": "Reload Everything",
   "reload-everything.config.category.behavior": "Behavior",
   "reload-everything.config.category.buttons": "Buttons",

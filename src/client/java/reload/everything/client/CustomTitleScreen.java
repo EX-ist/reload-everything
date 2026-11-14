@@ -4,7 +4,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
-import reload.everything.config.ConfigButton;
 import reload.everything.config.ReloadEverythingConfig;
 import reload.everything.core.RestartManager;
 
@@ -43,9 +42,6 @@ public class CustomTitleScreen extends TitleScreen {
             restartButton.setTooltip(Tooltip.create(Component.translatable(
                     softReload ? "tooltip.reload-everything.soft_reload" : "tooltip.reload-everything.restart_game")));
             this.addRenderableWidget(restartButton);
-            x += buttonSize + gap;
         }
-
-        this.addRenderableWidget(ConfigButton.create(this, x, y, buttonSize));
     }
 }
