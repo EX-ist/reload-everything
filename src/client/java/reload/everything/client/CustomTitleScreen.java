@@ -1,11 +1,12 @@
 package reload.everything.client;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.network.chat.Component;
+import reload.everything.config.ConfigButton;
+import reload.everything.config.ReloadEverythingConfig;
 import reload.everything.core.RestartManager;
-import net.minecraft.client.gui.components.Tooltip;
 
 public class CustomTitleScreen extends TitleScreen {
 
@@ -17,23 +18,34 @@ public class CustomTitleScreen extends TitleScreen {
     protected void init() {
         super.init();
 
-        // ==================== 主菜单重启按钮 ====================
+        // ==================== 主菜单重启按钮 + 配置按钮 ====================
+        ReloadEverythingConfig config = ReloadEverythingConfig.get();
+        boolean softReload = config.restartMode == ReloadEverythingConfig.RestartMode.SOFT_RELOAD;
+
         int buttonSize = 20;
+        int gap = 4;
         int y = this.height / 4 + 144;
         int exitX = this.width / 2 + 2;
         int exitWidth = 98;
-        int restartX = exitX + exitWidth + 4;
+        int x = exitX + exitWidth + gap;
 
-        Button restartButton = Button.builder(
-                Component.literal("⟳"),
-                button -> {
-                    Minecraft.getInstance().gui.setScreen(new RestartConfirmScreen(this, RestartManager::restartGame, "screen.reload-everything.confirm.restart"));
-                })
-                .bounds(restartX, y, buttonSize, buttonSize)
-                .build();
+        if (config.showTitleScreenButton) {
+            Button restartButton = Button.builder(
+                    Component.literal("⟳"),
+                    button -> RestartConfirmScreen.confirmOrRun(
+                            this,
+                            softReload ? RestartManager::softReload : RestartManager::restartGame,
+                            softReload
+                                    ? "screen.reload-everything.confirm.soft_reload"
+                                    : "screen.reload-everything.confirm.restart"))
+                    .bounds(x, y, buttonSize, buttonSize)
+                    .build();
+            restartButton.setTooltip(Tooltip.create(Component.translatable(
+                    softReload ? "tooltip.reload-everything.soft_reload" : "tooltip.reload-everything.restart_game")));
+            this.addRenderableWidget(restartButton);
+            x += buttonSize + gap;
+        }
 
-        restartButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.restart_game")));
-
-        this.addRenderableWidget(restartButton);
+        this.addRenderableWidget(ConfigButton.create(this, x, y, buttonSize));
     }
 }
