@@ -8,6 +8,11 @@
   "license": "MIT",
   "icon": "assets/reload-everything/icon.png",
   "environment": "client",
+  "contact": {
+    "homepage": "https://github.com/EX-ist/reload-everything",
+    "sources": "https://github.com/EX-ist/reload-everything",
+    "issues": "https://github.com/EX-ist/reload-everything/issues"
+  },
   "entrypoints": {
     "main": [
       "reload.everything.ReloadEverything"
@@ -30,7 +35,8 @@
     "fabricloader": ">=0.19.3",
     "minecraft": "~26.3",
     "java": ">=25",
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "cloth-config": ">=26.3.159"
   },
   "suggests": {
     "fastquit": "*"

@@ -1,11 +1,24 @@
 package reload.everything.client;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import reload.everything.config.ReloadEverythingConfig;
 
 public class RestartConfirmScreen extends Screen {
+
+    /**
+     * 按配置决定直接执行还是先弹出确认界面。
+     */
+    public static void confirmOrRun(Screen parent, Runnable action, String messageKey) {
+        if (ReloadEverythingConfig.get().confirmBeforeAction) {
+            Minecraft.getInstance().gui.setScreen(new RestartConfirmScreen(parent, action, messageKey));
+        } else {
+            action.run();
+        }
+    }
 
     private final Screen parent;
     private final Runnable onConfirm;
