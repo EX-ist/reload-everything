@@ -1,17 +1,13 @@
 {
   "modmenu.nameTranslation.reload-everything": "重启一切",
   "modmenu.descriptionTranslation.reload-everything": "一键重启游戏",
-
   "screen.reload-everything.confirm.title": "确认操作",
   "screen.reload-everything.confirm.restart": "确定要重启游戏吗？",
   "screen.reload-everything.confirm.reload_world": "确定要重新加载当前存档吗？",
-  "screen.reload-everything.confirm.reconnect": "确定要重新连接服务器吗？",
   "screen.reload-everything.confirm.reload_resource_packs": "确定要重新加载资源包吗？",
   "screen.reload-everything.confirm.button.confirm": "确认",
   "screen.reload-everything.confirm.button.cancel": "取消",
-
   "tooltip.reload-everything.restart_game": "重启游戏",
   "tooltip.reload-everything.reload_world": "重新加载当前存档",
-  "tooltip.reload-everything.reconnect_server": "重新连接服务器",
   "tooltip.reload-everything.reload_resource_packs": "重新加载资源包"
 }

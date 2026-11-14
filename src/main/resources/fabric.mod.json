@@ -3,18 +3,14 @@
   "id": "reload-everything",
   "version": "${version}",
   "name": "Reload Everything",
-  "description": "一键重启游戏",
+  "description": "一键重启游戏：重启进程、重载单人存档、重载资源包。",
   "authors": ["Miro"],
-  "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
-  },
   "license": "MIT",
   "icon": "assets/reload-everything/icon.png",
   "environment": "client",
   "entrypoints": {
     "main": [
-      "reload.everything.ReloadEverythingMod"
+      "reload.everything.ReloadEverything"
     ],
     "client": [
       "reload.everything.client.ReloadEverythingClient"
@@ -24,12 +20,19 @@
     ]
   },
   "mixins": [
-    "reload-everything.mixins.json"
+    "reload-everything.mixins.json",
+    {
+      "config": "reload-everything.client.mixins.json",
+      "environment": "client"
+    }
   ],
   "depends": {
     "fabricloader": ">=0.19.3",
     "minecraft": "~26.3",
     "java": ">=25",
     "fabric-api": "*"
+  },
+  "suggests": {
+    "fastquit": "*"
   }
 }
