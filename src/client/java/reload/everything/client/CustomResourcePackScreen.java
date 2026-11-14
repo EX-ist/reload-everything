@@ -28,11 +28,30 @@ public class CustomResourcePackScreen extends PackSelectionScreen {
 
         Minecraft client = Minecraft.getInstance();
 
+        // 以原版"打开资源包文件夹"按钮为基准定位：紧贴它左侧、同一行、同一高度。
+        Button folderButton = null;
+        String folderLabel = Component.translatable("pack.openFolder").getString();
+        for (var child : this.children()) {
+            if (child instanceof Button candidate && candidate.getMessage().getString().equals(folderLabel)) {
+                folderButton = candidate;
+                break;
+            }
+        }
+
         int buttonSize = 20;
         int gap = 4;
-        int openFolderX = 8;
-        int openFolderY = this.height - 33;
-        int openFolderWidth = 98;
+        int x;
+        int y;
+        if (folderButton != null) {
+            buttonSize = folderButton.getHeight();
+            x = folderButton.getX() - gap - buttonSize;
+            y = folderButton.getY();
+        } else {
+            ReloadEverything.warn("未找到打开资源包文件夹按钮，⟳ 按钮回退到默认位置");
+            x = 4;
+            y = this.height - 33;
+        }
+        x = Math.max(4, x);
 
         Button reloadButton = Button.builder(
                 Component.literal("⟳"),
@@ -44,7 +63,7 @@ public class CustomResourcePackScreen extends PackSelectionScreen {
                         client.gui.setScreen(target);
                     }));
                 })
-                .bounds(openFolderX + openFolderWidth + gap, openFolderY, buttonSize, buttonSize)
+                .bounds(x, y, buttonSize, buttonSize)
                 .build();
         reloadButton.setTooltip(Tooltip.create(Component.translatable("tooltip.reload-everything.reload_resource_packs")));
         this.addRenderableWidget(reloadButton);
