@@ -50,11 +50,11 @@ public final class RestartManager {
 
     public static void softReload() {
         if (clientReloadCallback == null) {
-            ReloadEverything.warn("客户端回调未注册，无法执行软重载");
+            ReloadEverything.warn("Client reload callback not registered, cannot soft reload");
             return;
         }
         clientReloadCallback.run();
-        ReloadEverything.info("资源已重新加载");
+        ReloadEverything.info("Resources reloaded");
     }
 
     // ==================== 单人存档重载 ====================
@@ -62,28 +62,28 @@ public final class RestartManager {
     public static void reloadWorld() {
         Minecraft client = Minecraft.getInstance();
         if (!client.isLocalServer()) {
-            ReloadEverything.warn("当前不在单机存档中，无法重载存档");
+            ReloadEverything.warn("Not in a singleplayer world, cannot reload the world");
             return;
         }
         IntegratedServer server = client.getSingleplayerServer();
         if (server == null) {
-            ReloadEverything.warn("无法获取单人服务器实例");
+            ReloadEverything.warn("Failed to get the integrated server instance");
             return;
         }
 
         String worldName = server.getWorldData().getLevelName();
-        ReloadEverything.info("正在重新加载存档: {}", worldName);
-        client.disconnectFromWorld(Component.literal("正在重新加载存档..."));
+        ReloadEverything.info("Reloading world: {}", worldName);
+        client.disconnectFromWorld(Component.translatable("reload-everything.status.reloading_world"));
 
         if (!awaitServerStop(client, server)) {
-            ReloadEverything.error("等待存档保存超时，已取消重载以避免损坏存档");
+            ReloadEverything.error("Timed out waiting for the world to save, reload cancelled to avoid corrupting the save");
             return;
         }
 
         clearFastQuitSavingWorlds();
-        ReloadEverything.info("开始加载存档: {}", worldName);
+        ReloadEverything.info("Loading world: {}", worldName);
         client.createWorldOpenFlows().openWorld(worldName,
-                () -> ReloadEverything.info("存档已重新加载: {}", worldName));
+                () -> ReloadEverything.info("World reloaded: {}", worldName));
     }
 
     /**
@@ -113,13 +113,13 @@ public final class RestartManager {
         try {
             Class<?> fastQuit = Class.forName(FASTQUIT_CLASS);
             fastQuit.getMethod("wait", IntegratedServer.class).invoke(null, server);
-            ReloadEverything.info("FastQuit 已完成存档保存");
+            ReloadEverything.info("FastQuit finished saving the world");
             return true;
         } catch (ClassNotFoundException e) {
-            ReloadEverything.info("未安装 FastQuit，改为轮询等待存档保存");
+            ReloadEverything.info("FastQuit not installed, polling until the world is saved");
             return false;
         } catch (Throwable t) {
-            ReloadEverything.warn("FastQuit.wait 调用失败: {}", String.valueOf(t));
+            ReloadEverything.warn("FastQuit.wait failed: {}", String.valueOf(t));
             return false;
         }
     }
@@ -137,12 +137,12 @@ public final class RestartManager {
             if (field.get(null) instanceof java.util.Map<?, ?> map && !map.isEmpty()) {
                 int size = map.size();
                 map.clear();
-                ReloadEverything.info("已清空 FastQuit savingWorlds ({} 个残留条目)", size);
+                ReloadEverything.info("Cleared FastQuit savingWorlds ({} leftover entries)", size);
             }
         } catch (ClassNotFoundException e) {
             // FastQuit 未安装，无需处理
         } catch (Throwable t) {
-            ReloadEverything.warn("清空 FastQuit savingWorlds 失败: {}", String.valueOf(t));
+            ReloadEverything.warn("Failed to clear FastQuit savingWorlds: {}", String.valueOf(t));
         }
     }
 
@@ -150,23 +150,23 @@ public final class RestartManager {
 
     public static void restartGame() {
         if (isDevelopmentEnvironment()) {
-            ReloadEverything.warn("开发环境不支持进程级重启，请使用软重载");
+            ReloadEverything.warn("Process restart is not supported in a development environment, use soft reload instead");
             return;
         }
         if (Boolean.getBoolean(RESTARTED_FLAG)) {
-            ReloadEverything.warn("检测到重启循环（重启标记已存在），改为软重载");
+            ReloadEverything.warn("Restart loop detected (marker file present), falling back to soft reload");
             softReload();
             return;
         }
 
         List<String> command = buildRestartCommand();
         if (command == null) {
-            ReloadEverything.warn("无法还原启动命令，改为软重载");
+            ReloadEverything.warn("Failed to restore the launch command, falling back to soft reload");
             softReload();
             return;
         }
 
-        ReloadEverything.info("即将重启，新进程命令: {}", String.join(" ", command));
+        ReloadEverything.info("Restarting, new process command: {}", String.join(" ", command));
         // 先退出再拉起：避免新旧两个实例同时写 options.txt / logs / saves
         Runtime.getRuntime().addShutdownHook(new Thread(() -> relaunch(command), "reload-everything-relaunch"));
         System.exit(0);
@@ -183,9 +183,9 @@ public final class RestartManager {
             builder.directory(new File(System.getProperty("user.dir", ".")));
             builder.inheritIO();
             Process process = builder.start();
-            ReloadEverything.info("新进程已启动，pid={}", process.pid());
+            ReloadEverything.info("New process started, pid={}", process.pid());
         } catch (Exception e) {
-            ReloadEverything.error("新进程启动失败，游戏将退出且不会自动重启", e);
+            ReloadEverything.error("Failed to start the new process, the game will exit without restarting", e);
         }
     }
 
@@ -221,7 +221,7 @@ public final class RestartManager {
 
         String effectiveMainClass = mainClass;
         if (effectiveMainClass.contains(THESEUS_LAUNCH)) {
-            ReloadEverything.info("检测到 Modrinth 启动器，改用 KnotClient 直接启动");
+            ReloadEverything.info("Modrinth launcher detected, launching through KnotClient directly");
             effectiveMainClass = KNOT_CLIENT;
             gameArguments = filterMinecraftArguments(gameArguments);
         }
@@ -247,7 +247,7 @@ public final class RestartManager {
                 return arguments.get();
             }
         } catch (Throwable t) {
-            ReloadEverything.warn("读取进程启动参数失败: {}", String.valueOf(t));
+            ReloadEverything.warn("Failed to read process arguments: {}", String.valueOf(t));
         }
         return null;
     }
@@ -291,7 +291,7 @@ public final class RestartManager {
         for (int i = 0; i < arguments.size(); i++) {
             String argument = arguments.get(i);
             if (!MINECRAFT_CLIENT_ARGUMENTS.contains(argument)) {
-                ReloadEverything.info("丢弃启动器专属参数: {}", argument);
+                ReloadEverything.info("Dropping launcher-specific argument: {}", argument);
                 continue;
             }
             result.add(argument);

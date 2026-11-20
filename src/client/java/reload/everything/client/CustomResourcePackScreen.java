@@ -48,7 +48,7 @@ public class CustomResourcePackScreen extends PackSelectionScreen {
             x = folderButton.getX() - gap - buttonSize;
             y = folderButton.getY();
         } else {
-            ReloadEverything.warn("未找到打开资源包文件夹按钮，⟳ 按钮回退到默认位置");
+            ReloadEverything.warn("Open pack folder button not found, using the default position for the ⟳ button");
             x = 4;
             y = this.height - 33;
         }
@@ -64,7 +64,7 @@ public class CustomResourcePackScreen extends PackSelectionScreen {
                             () -> {
                                 button.active = false;
                                 client.reloadResourcePacks().thenRun(() -> client.execute(() -> {
-                                    ReloadEverything.info("资源包已重新加载");
+                                    ReloadEverything.info("Resource packs reloaded");
                                     Screen target = this.returnScreen != null ? this.returnScreen : new CustomTitleScreen(true);
                                     client.gui.setScreen(target);
                                 }));

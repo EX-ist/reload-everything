@@ -60,7 +60,7 @@ public final class ReloadEverythingConfig {
             }
             return config;
         } catch (IOException | JsonSyntaxException e) {
-            ReloadEverything.warn("无法读取配置文件 {}，将使用默认设置", path);
+            ReloadEverything.warn("Failed to read config file {}, using defaults", path);
             return new ReloadEverythingConfig();
         }
     }
@@ -73,7 +73,7 @@ public final class ReloadEverythingConfig {
                 GSON.toJson(this, writer);
             }
         } catch (IOException e) {
-            ReloadEverything.error("无法保存配置文件 " + path, e);
+            ReloadEverything.error("Failed to save config file " + path, e);
         }
     }
 }

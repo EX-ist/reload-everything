@@ -27,5 +27,6 @@
   "reload-everything.config.show_pause_screen_button.tooltip": "在单人暂停菜单的“选项”旁显示 ⟳ 按钮。",
   "reload-everything.config.show_resource_pack_button": "资源包界面显示重载按钮",
   "reload-everything.config.show_resource_pack_button.tooltip": "在资源包界面显示 ⟳ 按钮。",
-  "reload-everything.config.source": "源代码"
+  "reload-everything.config.source": "源代码",
+  "reload-everything.status.reloading_world": "正在重新加载存档..."
 }
