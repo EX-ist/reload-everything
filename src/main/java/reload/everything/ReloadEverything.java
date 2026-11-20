@@ -14,7 +14,7 @@ public class ReloadEverything implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Reload Everything 已初始化");
+		LOGGER.info("Reload Everything initialized");
 	}
 
 	public static Identifier id(String path) {

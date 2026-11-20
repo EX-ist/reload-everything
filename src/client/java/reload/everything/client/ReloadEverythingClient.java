@@ -25,7 +25,7 @@ public class ReloadEverythingClient implements ClientModInitializer {
     public void onInitializeClient() {
         RestartManager.setClientReloadCallback(() -> {
             Minecraft.getInstance().reloadResourcePacks();
-            ReloadEverything.info("资源已重新加载");
+            ReloadEverything.info("Resources reloaded");
         });
 
         ScreenEvents.AFTER_INIT.register((client, screen, scaledWidth, scaledHeight) -> {
@@ -59,7 +59,7 @@ public class ReloadEverythingClient implements ClientModInitializer {
         try {
             Object model = readField(PackSelectionScreen.class, screen, "model");
             if (model == null) {
-                throw new IllegalStateException("PackSelectionScreen.model 为 null");
+                throw new IllegalStateException("PackSelectionScreen.model is null");
             }
             PackRepository repository = (PackRepository) readField(model.getClass(), model, "repository");
             Consumer<PackRepository> output = (Consumer<PackRepository>) readField(model.getClass(), model, "output");
@@ -68,7 +68,7 @@ public class ReloadEverythingClient implements ClientModInitializer {
 
             client.gui.setScreen(new CustomResourcePackScreen(repository, output, packDir, title, lastNonPackScreen));
         } catch (Exception e) {
-            ReloadEverything.error("无法替换资源包界面，保留原版界面", e);
+            ReloadEverything.error("Failed to replace the resource pack screen, keeping the vanilla one", e);
         }
     }
 

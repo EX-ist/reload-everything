@@ -18,7 +18,7 @@ public class ReloadEverythingPreLaunch implements PreLaunchEntrypoint {
     @Override
     public void onPreLaunch() {
         fullCommand = System.getProperty("sun.java.command", "");
-        ReloadEverything.info("启动命令: {}", fullCommand);
+        ReloadEverything.info("Launch command: {}", fullCommand);
         if (fullCommand.isEmpty()) {
             return;
         }
@@ -29,7 +29,7 @@ public class ReloadEverythingPreLaunch implements PreLaunchEntrypoint {
             allArgs = new String[parsed.length - 1];
             System.arraycopy(parsed, 1, allArgs, 0, parsed.length - 1);
         }
-        ReloadEverything.info("解析后主类: {}, 参数数量: {}", mainClass, allArgs.length);
+        ReloadEverything.info("Parsed main class: {}, argument count: {}", mainClass, allArgs.length);
     }
 
     /** 合并带空格的路径类参数（--gameDir 的值里可能有空格）。 */

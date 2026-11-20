@@ -3,7 +3,7 @@
   "id": "reload-everything",
   "version": "${version}",
   "name": "Reload Everything",
-  "description": "一键重启游戏：重启进程、重载单人存档、重载资源包。",
+  "description": "Reload things with one click: restart the game process, reload a singleplayer world, reload resource packs.",
   "authors": ["Miro"],
   "license": "MIT",
   "icon": "assets/reload-everything/icon.png",
